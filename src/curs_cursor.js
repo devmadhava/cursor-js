@@ -96,7 +96,7 @@ class Cursor {
 
         this.delay = delay;
         this.section = this.#createSection(section, selector);
-        this.#findCursorSectionInAncestors(section);
+        this.#findCursorSectionInAncestors(this.section);
     }
 
     #createSection(section, selector) {
