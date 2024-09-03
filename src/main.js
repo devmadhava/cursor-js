@@ -59,5 +59,5 @@ curs_allSections?.forEach(async curs_section => {
         section: curs_section,
     });
 
-    await cursor.load();    
+    cursor.load();    
 });

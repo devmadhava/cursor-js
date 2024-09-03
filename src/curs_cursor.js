@@ -95,13 +95,24 @@ class Cursor {
         this.clickText = clickText;
 
         this.delay = delay;
-        this.selector = selector;
-        this.section = section;
-
+        this.section = this.#createSection(section, selector);
         this.#findCursorSectionInAncestors(section);
     }
 
-    async #init() {
+    #createSection(section, selector) {
+        if (section instanceof HTMLElement) {
+            return section;
+        }
+
+        const sectionFromSelector = selector && document.body.querySelector(selector);
+        if (sectionFromSelector instanceof HTMLElement) {
+            return sectionFromSelector;
+        }
+
+        throw new Error("Sorry no valid selector or section has been provided");
+    }
+
+    #init() {
         // this.module = await import(`./templates/cursor${this.type}.js`);
         // this.cursor = this.module.cursor;
         this.cursor = cursorMap[`cursor${this.type}`];
@@ -139,8 +150,8 @@ class Cursor {
         this.section.addEventListener('mouseleave', (event) => this.cursor.deactivate(event));
     }
 
-    async load() {
-        await this.#init();
+    load() {
+        this.#init();
         this.#setEventListener();
     }
 
