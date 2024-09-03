@@ -1,7 +1,3 @@
-import { curs_Span1 } from "../creator.js   ";
-import { curs_injectCSS, curs_renderElementWithTranslate } from "../helper.js   ";
-
-
 // CSS Needed
 const cursorCSS = {
     name: 'cjs-1',

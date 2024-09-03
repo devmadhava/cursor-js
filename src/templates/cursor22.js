@@ -1,5 +1,5 @@
-import {  curs_SpanNoBGWithDelay } from "../creator.js   ";
-import { curs_getRandomColor, curs_getRandomElementFromArray } from "../helper.js   ";
+import {  curs_SpanNoBGWithDelay } from "../creator.js";
+import { curs_getRandomColor, curs_getRandomElementFromArray } from "../helper.js";
 
 
 // CSS Needed

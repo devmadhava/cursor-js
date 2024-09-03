@@ -1,4 +1,4 @@
-import { curs_Span1 } from "../creator.js   ";
+import { curs_Span1 } from "../creator.js";
 
 // CSS Needed
 const cursorCSS = {

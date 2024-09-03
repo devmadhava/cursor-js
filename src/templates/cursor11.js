@@ -1,4 +1,4 @@
-import { curs_SpanTextWithDelay } from "../creator.js   ";
+import { curs_SpanTextWithDelay } from "../creator.js";
 import { curs_circularText } from "../helper.js";
 
 // CSS Needed

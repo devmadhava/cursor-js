@@ -1,4 +1,4 @@
-import { curs_SpanNoDelay } from "../creator.js   ";
+import { curs_SpanNoDelay } from "../creator.js";
 import { curs_centerAnElementToTarget } from "../helper.js";
 
 

@@ -1,6 +1,8 @@
 import Cursor from "./curs_cursor.js";
 import { curs_injectCSS } from "./helper.js";
 
+window.Cursor = Cursor;
+
 // Run a render instance
 // const render = new Curs_Renderer();
 curs_injectCSS({
@@ -32,8 +34,10 @@ curs_allSections?.forEach(async curs_section => {
     const font = curs_section.getAttribute('data-cursor-font');
 
     const textColor = curs_section.getAttribute('data-cursor-text-color');
+    const text = curs_section.getAttribute('data-cursor-text');
     const imageText = curs_section.getAttribute('data-cursor-text-image');
     const buttonText = curs_section.getAttribute('data-cursor-text-button');
+    const clickText = curs_section.getAttribute('data-cursor-text-click');
 
     const delayAttribute = curs_section.getAttribute('data-cursor-delay');
     const delay = delayAttribute !== 'false' && delayAttribute !== null;
@@ -45,8 +49,10 @@ curs_allSections?.forEach(async curs_section => {
         font,
 
         textColor,
+        text,
         imageText,
         buttonText,
+        clickText,
 
         delay,
 

@@ -1,4 +1,4 @@
-import { curs_SpanTextWithDelay } from "../creator.js   ";
+import { curs_SpanTextWithDelay } from "../creator.js";
 import { curs_circularText } from "../helper.js";
 
 // CSS Needed
@@ -81,11 +81,11 @@ export const cursor = {
 
     textColor: null,
 
-    create: function ({color, textColor, zIndex, text, imageText, delay}) {
+    create: function ({color, textColor, zIndex, text, imageText, clickText, delay}) {
         color = color ? color[0] : "#FFF";
         textColor = textColor ? textColor[0] : "#000";
         text = text || 'Only 25 chars with space.';
-    
+
         this.cursor1 = curs_SpanTextWithDelay({zIndex, color: color, textColor: textColor, font: "Monospace", classes: "cjs-span cjs-13", delay});
 
         const textElement = document.createElement('p');

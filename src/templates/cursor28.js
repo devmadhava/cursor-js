@@ -1,4 +1,4 @@
-import { curs_Span1 } from "../creator.js   ";
+import { curs_Span1 } from "../creator.js";
 import { curs_invertColorRGBFormat } from "../helper.js";
 
 // CSS Needed
