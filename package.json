@@ -3,7 +3,7 @@
     "build": "webpack"
   },
   "name": "@vogelweb/cursor-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Create Simple yet effective cursor effect without writing JavaScript.",
   "main": "dist/min/cursor.js",
   "repository": {
