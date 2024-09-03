@@ -13,7 +13,7 @@ Add the above tag at the end of `body` but replace the src with the appropriate 
 
 ### 2. Using CDN
 
-`<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js/dist/min/cursor.js" defer></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js@1.0.4/dist/min/cursor.js"></script>`
 
 Just copy and paste the above script tag at the end of the `body`.
 
