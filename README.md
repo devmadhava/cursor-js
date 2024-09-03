@@ -13,7 +13,7 @@ Add the above tag at the end of `body` but replace the src with the appropriate 
 
 ### 2. Using CDN
 
-`<script type="module" src="../cursorwebmin.js"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js@1.0.0/dist/min/cursor.js"></script>`
 
 Just copy and paste the above script tag at the end of the `body`.
 
@@ -214,6 +214,7 @@ Similar to the __color__ property, you can use various color conventions for cur
     });
 
     await cursor.load();
+```
 
 Here's a complete example of a __Cursor__ class instance with various cursor customizations:
 
@@ -233,3 +234,5 @@ Here's a complete example of a __Cursor__ class instance with various cursor cus
 
     await cursor.load();
 ```
+
+## Lincese MIT
