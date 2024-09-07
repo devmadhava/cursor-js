@@ -3,11 +3,12 @@
     "build": "rollup -c"
   },
   "name": "@vogelweb/cursor-js",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Create Simple yet effective cursor effect without writing JavaScript.",
   "main": "dist/min/cursor.js",
   "files": [
-    "dist", "types.d.ts"
+    "dist",
+    "types.d.ts"
   ],
   "publishConfig": {
     "access": "public",
