@@ -1,10 +1,6 @@
 import Cursor from "./curs_cursor.js";
 import { curs_injectCSS } from "./helper.js";
 
-window.Cursor = Cursor;
-
-// Run a render instance
-// const render = new Curs_Renderer();
 curs_injectCSS({
     name: 'cjs-span',
     cssString: `
@@ -23,7 +19,7 @@ curs_injectCSS({
         pointer-events: none;
     }
     `
-})
+});
 
 const curs_allSections = document.querySelectorAll('[data-cursor-type]');
 
@@ -42,6 +38,8 @@ curs_allSections?.forEach(async curs_section => {
     const delayAttribute = curs_section.getAttribute('data-cursor-delay');
     const delay = delayAttribute !== 'false' && delayAttribute !== null;
 
+    const pointer = curs_section.getAttribute('data-cursor-pointer');
+
     const cursor = new Cursor({
         type,
         color,
@@ -55,9 +53,14 @@ curs_allSections?.forEach(async curs_section => {
         clickText,
 
         delay,
+        pointer,
 
         section: curs_section,
     });
 
     cursor.load();    
 });
+
+
+
+export default Cursor;

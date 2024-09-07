@@ -7,13 +7,13 @@ You can either download the JavaScript File, place it in the project and use __s
 
 ### 1. Using Script Tag
 
-`<script type="module" src="../cursorwebmin.js"></script>`
+`<script src="dist/min/cursor.js"></script>`
 
 Add the above tag at the end of `body` but replace the src with the appropriate path to your downloaded file. If you decide to use this method, please make sure you have `type="module"` enabled.
 
 ### 2. Using CDN
 
-`<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js@1.0.4/dist/min/cursor.js"></script>`
+`<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js@1.0.5/dist/min/cursor.js"></script>`
 
 Just copy and paste the above script tag at the end of the `body`.
 
