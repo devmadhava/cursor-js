@@ -1,10 +1,11 @@
 import { curs_SpanNoDelay } from "../creator.js";
 import { curs_centerAnElementToTarget } from "../helper.js";
+import Template from "./template.js";
 
 
 // CSS Needed
 const cursorCSS = {
-    name: 'cjs-6-1',
+    name: 'cjs-6',
     cssString: `
     .cjs-6-1 {
         width: 60px;
@@ -45,25 +46,22 @@ const cursorCSS = {
 }
 
 
-export const cursor = {
+class cursor extends Template {
+    constructor() {
+        super();
+        this.css = cursorCSS;
+        this.cursor1 = null;
+        this.cursor2 = null;
+        this.pause = false;
+    }
 
-    css: cursorCSS,
-
-    isActive: false,
-
-    cursor1: null,
-
-    cursor2: null,
-
-    pause: false,
-
-    create: function ({color, zIndex}) {
+    create({color, zIndex}) {
         const [color1, color2] = color || ["#000", "#000"];
         this.cursor1 = curs_SpanNoDelay({zIndex, color: color1 || "#000", classes: 'cjs-span cjs-6-1'});
         this.cursor2 = curs_SpanNoDelay({zIndex, color: color2 || "#000", classes: 'cjs-span cjs-6-2'});
-    },
+    }
 
-    activate: function (event) {
+    activate(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor1.style.display = '';
         this.cursor1.style.transition = '';
@@ -73,9 +71,9 @@ export const cursor = {
         this.cursor2.style.transition = '';
 
         this.isActive = true;
-    },
+    }
 
-    deactivate: function () {
+    deactivate() {
         this.cursor1.style.display = 'none';
         this.cursor1.style.transition = 'none';
 
@@ -83,26 +81,26 @@ export const cursor = {
         this.cursor2.style.transition = 'none';
 
         this.isActive = false;
-    },
+    }
 
-    onMouseMove: function (event) {
+    onMouseMove(event) {
         if (!this.pause) {
             this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         }
 
         this.cursor2.style.translate = `${event.clientX}px ${event.clientY}px`;
-    },
+    }
     
     // On Mouse down 
-    onButtonOver: function (event) {
+    onButtonOver(event) {
         this.cursor2.classList.add('button');
 
         curs_centerAnElementToTarget(this.cursor1, event.target);
 
         this.pause = true;
-    },
+    }
 
-    onButtonOut: function (event) {
+    onButtonOut(event) {
         this.cursor2.classList.remove('button');
 
         // Unpause
@@ -110,25 +108,40 @@ export const cursor = {
         this.cursor1.style.height = '';
 
         this.pause = false;
-    },
+    }
 
-    onImageOver: function () {
+    onImageOver() {
         this.cursor1.classList.add('image');
         this.cursor2.classList.add('image');
-    },
+    }
 
-    onImageOut: function () {
+    onImageOut() {
         this.cursor1.classList.remove('image');
         this.cursor2.classList.remove('image');
-    },
+    }
 
-    onMouseDown: function () {
+    onMouseDown() {
         this.cursor1.classList.add('click');
         this.cursor2.classList.add('click');
-    },
+    }
 
-    onMouseUp: function () {
+    onMouseUp() {
         this.cursor1.classList.remove('click');
         this.cursor2.classList.remove('click');
     }
+    
+    // Delete function
+    delete() {
+        this.deactivate();
+        this.cursor1.remove();
+        this.cursor2.remove();
+        this.cursor1 = null;
+        this.cursor2 = null;
+        this.css = null;
+        this.isActive = null;
+        this.pause = null;
+    }
 }
+
+
+export {cursor}

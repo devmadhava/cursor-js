@@ -1,5 +1,6 @@
 import { curs_SpanNoDelay, curs_SpanTextNoDelay } from "../creator.js";
 import { curs_centerAnElementToTarget, curs_circularText, curs_getScaleRelativeToTarget } from "../helper.js";
+import Template from "./template.js";
 
 // CSS Needed
 const cursorCSS = {
@@ -84,29 +85,22 @@ const cursorCSS = {
 };
 
 
-export const cursor = {
+export class cursor extends Template {
+    constructor() {
+        super();
+        this.css = cursorCSS;
+        this.isActive = false;
+        this.pause = false;
+        this.cursor1 = null;
+        this.textElement = null;
+        this.cursor2 = null;
+        this.text = null;
+        this.imageText = null;
+        this.color = null;
+        this.textColor = null;
+    }
 
-    css: cursorCSS,
-
-    isActive: false,
-
-    pause: false,
-
-    cursor1: null,
-
-    textElement: null,
-
-    cursor2: null,
-
-    text: null,
-
-    imageText: null,
-
-    color: null,
-
-    textColor: null,
-
-    create: function ({color, textColor, zIndex, text, imageText}) {
+    create({color, textColor, zIndex, text, imageText}) {
         color = color ? color[0] : "#000";
         textColor = textColor ? textColor[0] : "#000";
         text = text || 'Only 25 chars with space.';
@@ -126,9 +120,9 @@ export const cursor = {
         this.imageText = imageText || "Yep! 25 chars are allowed";
         this.color = color;
         this.textColor = textColor;
-    },
+    }
 
-    activate: function (event) {
+    activate(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor1.style.display = "";
         this.cursor1.style.transition = "";
@@ -138,9 +132,9 @@ export const cursor = {
         this.cursor2.style.transition = '';
 
         this.isActive = true;
-    },
+    }
 
-    deactivate: function () {
+    deactivate() {
         this.cursor1.style.display = "none";
         this.cursor1.style.transition = "none";
 
@@ -148,17 +142,17 @@ export const cursor = {
         this.cursor2.style.transition = 'none';
         
         this.isActive = false;
-    },
+    }
 
-    onMouseMove: function (event) {
+    onMouseMove(event) {
         this.cursor2.style.translate = `${event.clientX}px ${event.clientY}px`;
 
         if (this.pause) return;
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
-    },
+    }
     
     // On Mouse down 
-    onButtonOver: function (event) {
+    onButtonOver(event) {
         this.cursor1.classList.add("button");
         curs_centerAnElementToTarget(this.cursor1, event.target);
         
@@ -168,9 +162,9 @@ export const cursor = {
         this.cursor2.classList.add('button');
 
         this.pause = true;
-    },
+    }
 
-    onButtonOut: function () {
+    onButtonOut() {
         this.cursor1.classList.remove("button");
 
         // Unpause
@@ -183,29 +177,47 @@ export const cursor = {
         this.cursor2.classList.remove('button');
 
         this.pause = false;
-    },
+    }
 
-    onImageOver: function () {
+    onImageOver() {
         this.textElement.innerText = this.imageText;
         curs_circularText({size: 100, element: this.textElement, spacing: 14});
         
         this.cursor2.classList.add('image');
-    },
+    }
 
-    onImageOut: function () {
+    onImageOut() {
         this.textElement.innerText = this.text;
         curs_circularText({size: 100, element: this.textElement, spacing: 14});
         
         this.cursor2.classList.remove('image');
-    },
+    }
 
-    onMouseDown: function () {
+    onMouseDown() {
         this.cursor1.classList.add("click");
         this.cursor2.classList.add('click');
-    },
+    }
 
-    onMouseUp: function () {
+    onMouseUp() {
         this.cursor1.classList.remove("click");
         this.cursor2.classList.remove('click');
+    }
+    
+    // Delete function
+    delete() {
+        this.deactivate();
+        this.cursor1.remove();
+        this.cursor2.remove();
+        this.cursor1 = null;
+        this.cursor2 = null;
+        this.css = null;
+        this.isActive = null;
+
+        this.pause = null;
+        this.textElement = null;
+        this.text = null;
+        this.imageText = null;
+        this.color = null;
+        this.textColor = null;
     }
 }

@@ -1,224 +1,308 @@
 # Cursor JS
 
-**Cursor.js** is a JavaScript library that allows you to create and customize cursors with various templates and properties. You can apply these custom cursors to any `div` or `section` element on your webpage, with support for dynamic effects and state-based text content. The Cursors can be easily be created using either HTML **data attributes** or JavaScript **Cursor** class. You can see all the cursor effects and templates *here*.
+**Cursor.js** is a JavaScript library that allows you to create and customize cursors with various templates and properties. You can apply these custom cursors to any `div` or `section` element on your webpage, with support for dynamic effects and state-based text content. Cursors can be created using either HTML **data attributes** or the JavaScript **Cursor** class. You can see all the cursor effects and templates _here_.
 
-## How to Use?
-You can either download the JavaScript File, place it in the project and use __script tag__ with the JavaScript file as source. Or you can use the cdn link provided.
+<br>
 
-### 1. Using Script Tag
+## Basic Use
 
-`<script src="dist/min/cursor.js"></script>`
+Insert this CDN in your website at the end of the `<body>`. Right above the `</body>` tag.
 
-Add the above tag at the end of `body` but replace the src with the appropriate path to your downloaded file. If you decide to use this method, please make sure you have `type="module"` enabled.
+```
+<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js@1.0.6/dist/min/cursor.js"></script>
+```
 
-### 2. Using CDN
+After including the CDN tag, use the `data-cursor-type` attribute on the `div`, `section`, `body`, or any other tag, and set its value to the cursor type you want. You can change the value from 1 to any number between **1 and 34** for different cursors. Here's the code for setting the cursor on the body:
 
-`<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js@1.0.5/dist/min/cursor.js"></script>`
+```
+<body data-cursor-type="1"> Your Body Content is here.... </body>
+```
+
+You can check all cursor types available [here](https://www.vogelweb.io/cursor-js).
+
+<br>
+
+### Using with JavaScript
+
+While this is not required, if you want more control over the cursor or prefer to write this in JavaScript, you can do that too. Just use the provided `Cursor` class to create new instances. The cursor mentioned above is recreated in JS using the code below:
+
+```
+const cursor = new Cursor({
+    type: 1,
+    selector: "body"                 
+})
+```
+
+<br><br>
+
+## Different Ways to Install
+
+You can either download the JavaScript file, place it in your project, and use the `script` tag with the JavaScript file as the source, or you can use the CDN link provided.
+
+<br>
+
+### 1\. Using Script Tag
+
+```
+<script src="https://cdn.jsdelivr.net/npm/@vogelweb/cursor-js@1.0.5/dist/min/cursor.js"></script>
+```
 
 Just copy and paste the above script tag at the end of the `body`.
 
-## Type of Cursors
-There are currently over thirty cursor templates available in the library. Given the increasing number of cursor templates, each template is identified by a number rather than a name. The numbering starts from 1 and goes up to the current total, which is 28. This numbering system simplifies identification and management of the templates.
+<br>
+
+### 2\. Using NPM
+
+```
+npm i @vogelweb/cursor-js
+```
+
+This will install the node module which will contain dist/esm.js file. You can use the esm.js directly by using import statement in your JavaScript file.
+
+```
+import Cursor from '/path-to-node_modules/@vogelweb/cursor-js/dist/esm.js
+```
+
+<br>
+
+### 3\. Downloading Files
+
+You can download the files directly from our website. [Here](https://www.vogelweb.io/cursor-js/how-to-use). This will also allow you to use dynamic imports. You can also use dynamic imports if you used NPM. Learn how to use Dynamic Imports [here](https://www.vogelweb.io/cursor-js/dynamic-imports).
+
+
+<br><br>
+## Types of Cursors
+
+There are currently over thirty cursor templates available in the library. Each template is identified by a number rather than a name, starting from 1 and going up to 34. This numbering system simplifies the identification and management of templates. See all the cursors [here](https://www.vogelweb.io/cursor-js/).
+
+
+<br><br>
+## Customizing cursors
 
 ### Each cursor template follows a certain structure and supports four distinct states:
-1. __Idle__: The default state of the cursor.
-2. __Image__: The state when the cursor is hovering over button or a (anchor) tags.
-3. __Button__: The default state when the cursor is at rest.
-4. __Click__: The state when the mouse button is pressed.
-You can customize each cursor according to its abilities and your preferences.
 
-## Using HTML Data Attributes to create Cursor
-1. __Basic Cursor Setup__: Add the `data-cursor-type` attribute to your target `div`, `section` or any tag for that matter to apply a cursor:
+1.  **Idle**: The default state of the cursor.
+2.  **Image**: The state when the cursor is hovering over `<img>` tags.
+3.  **Button**: The state when the cursor is hovering over `<button>` or `<a>` tags.
+4.  **Click**: The state when the mouse button is pressed.
 
-`<div data-cursor-type="1">... This is a Section ...</div>`
+You can customize each cursor according to its abilities and your preferences. You can even change the targets of the **Image** and **Button** states so these states will trigger on elements provided by you, or you can even remove these two states completely.
 
-2. __Adding a delay__: Add a slight delay effect with the `data-cursor-delay` attribute:
+As mentioned above there are two ways to create a cursor and as such there are two ways to customize too. One way is to use `data-attributes` and the other is to pass custom values when using `Cursor` class instance to create Cursor.
 
-`<div data-cursor-type="number" data-cursor-delay="true">Hover over me</div>`
+<br>
 
-Note - Not all Cursors have the delay effect since in some templates this effect is added and needed by default.
+1.  **Basic Cursor Setup**: Add the `data-cursor-type` attribute to your target `div`, `section`, or any tag to apply a cursor:
+    
+    ```
+    <div data-cursor-type="1">... This is a Section ...</div>
+    ```
 
-3. __Changing the color__: Change the color of cursor element(s) with the `data-cursor-color` attribute:
-
-`<div data-cursor-type="number" data-cursor-color="#ff0000">Hover over me</div>`
-
-You can use various color conventions for cursor customization, including _RGB_, _Hex_, or even _Color names_. Additionally, if the cursor effect or template supports it, you can specify multiple colors by separating them with a space.
-
-`<div data-cursor-type="number" data-cursor-color="#ff0000 red #fff">Hover over me</div>`
-
-In this example, the cursor will use the specified colors (_#ff0000_, _red_, and _#fff_) as allowed by the cursor's effect or template.
-
-4. __Adding Text__: Some cursor templates allow you to add text to the cursor. This text can be displayed in any of the four states: __idle__, __button__, __image__, or __click__, depending on the cursor's effect or template. The following data attributes can be used to specify text for different states:
-    1. __Idle Text__: This can be added using the `data-cursor-text` attribute:
-    `<div data-cursor-type="number" data-cursor-text="Idle Text Statement">Hover over me</div>`
-
-    2. __Button Text__: This can be added using `data-cursor-text-button` attribute:
-    `<div data-cursor-type="number" data-cursor-text-button="Button Text Statement">Hover over me</div>`
-
-    3. __Image Text__: This can be added using `data-cursor-text-image` attribute:
-    `<div data-cursor-type="number" data-cursor-text-image="Image Text Statement">Hover over me</div>`
-
-    4. __Click Text__: This can be added using `data-cursor-text-click` attribute:
-    `<div data-cursor-type="number" data-cursor-text-click="Click Text Statement">Hover over me</div>`
-
-5. __Changing Text Color__: Change the color of text with the `data-cursor-color` attribute:
-
-`<div data-cursor-type="number" data-cursor-color="#ff0000">Hover over me</div>`
-
-Similar to the __data-cursor-color__, you can use various color conventions for cursor customization, including _RGB_, _Hex_, or even _Color names_.
-
-6. __Changing Font Family__: Change the font family of text with the `data-cursor-font` attribute:
-
-`<div data-cursor-type="number" data-cursor-font="Monospace">Hover over me</div>`
-
-Here's a complete example of a div with various cursor customizations:
-
-```
-<div data-cursor-type="number"
-     data-cursor-delay="true"
-     data-cursor-color="#ff0000"
-     data-cursor-text="Idle Text Statement"
-     data-cursor-text-button="Button Text Statement"
-     data-cursor-text-image="Image Text Statement"
-     data-cursor-text-click="Click Text Statement"
-     data-cursor-text-color="#ff0000"
-     data-cursor-font="Monospace">
-  Hover over me
-</div>
-```
-
-## Using JavaScript Cursor Class to create Cursor
-
-It is pretty much similar to the method above the only difference is how you are sending the information. Rather than use `data` attributes, you will be utilizing the globaly available __Cursor__ class to create instances with specific templates. 
-
-1. __Basic Cursor Setup__: To create a custom cursor, instantiate the Cursor class and pass an object as a parameter. This object requires at least two key-value pairs:
-
-    - __`type`__:  Specifies which cursor template to load.
-    - __`selector`__: ndicates the element or section where the cursor will be applied.
-
-```
+    You can create the same cursor in JavaScript using `Cursor` class. You just need to pass the following key-value pairs:
+    *   **type**: Specifies which cursor template to load.
+    *   **selector**: Indicates the element or section where the cursor will be applied.
+    
+    ```
     const cursor = new Cursor({
         type: 1,
-        selector: '.section'
+        selector: '.class' or '#id'
     });
-
-    await cursor.load();
-```
-
-Note - After creating an instance of the __Cursor__ class, it is necessary to run `await cursor.load()` where the cursor is the name of the cursor instance created.
-
-2. __Adding a delay__: Add a slight delay effect with the `delay` property:
-
-```
+    
+    ```
+    
+    <br>
+    
+2.  **Adding a Delay**: Add a slight delay effect with the `data-cursor-delay` attribute:
+    
+    ```
+    <div data-cursor-type="number" data-cursor-delay="true">Hover over me</div>
+    ```
+    You can create the above using the `delay` property.
+    
+    ```
     const cursor = new Cursor({
         type: number,
         selector: '.section',
         delay: true,
     });
+    ```
 
-    await cursor.load();
-```
-
-Note - Not all Cursors have the delay effect since in some templates this effect is added and needed by default.
-
-3. __Changing the color__: Change the color of cursor element(s) with the `color` property, its value is a string of color(s):
-
-```
+    Note: Not all cursors have the delay effect, as some templates include this effect by default.
+    
+    <br>
+    
+3.  **Changing the Color**: Change the color of the cursor element(s) with the `data-cursor-color` attribute:
+    
+    ```
+    <div data-cursor-type="number" data-cursor-color="#ff0000">Hover over me</div>
+    ```
+    Or in JavaScript using `color` property.
+    ```
     const cursor = new Cursor({
         type: number,
         selector: '.section',
         color: '#ff0000',
     });
+    ```
+    
+    You can use various color conventions for cursor customization, including _RGB_, _Hexadecimal Values_, or _Color names_. Additionally, if the cursor effect or template supports it, you can specify multiple colors by separating them with a space.
+    
+    ```
+    <div data-cursor-type="number" data-cursor-color="#ff0000 red #fff">Hover over me</div>
+    ```
 
-    await cursor.load();
-```
-
-You can use various color conventions for cursor customization, including _RGB_, _Hex_, or even _Color names_. Additionally, if the cursor effect or template supports it, you can specify multiple colors by separating them with a space.
-
-```
+    And similarly in JavaScript: 
+    ```
     const cursor = new Cursor({
         type: number,
         selector: '.section',
         color: '#ff0000 red #fff',
     });
-
-    await cursor.load();
-```
-
-In this example, the cursor will use the specified colors (_#ff0000_, _red_, and _#fff_) as allowed by the cursor's effect or template.
-
-4. __Adding Text__: Similar to above, the text also here is sent for different states which are: __idle__, __button__, __image__, and __click__, depending on the cursor's effect or template. The following key-value properties can be used to specify text for different states:
-    1. __Idle Text__: This can be added using the `text` property:
     ```
+    
+    In this example, the cursor will use the specified colors (`#ff0000`, `red`, and `#fff`) as allowed by the cursor's effect or template.
+    
+    <br>
+    
+4.  **Adding Text**: Some cursor templates allow you to add text to the cursor. This text can be displayed in any of the four states: **idle**, **button**, **image**, or **click**, depending on the cursor's effect or template. The following data attributes can be used to specify text for different states:
+    *   **Idle Text**: Added using the `data-cursor-text` attribute:
+        
+        ```
+        <div data-cursor-type="number" data-cursor-text="Idle Text Statement">Hover over me</div>
+        ```
+
+        Or Using `text` property with JavaScript:
+        
+         ```
         const cursor = new Cursor({
             type: number,
             selector: '.section',
             text: 'Idle Text Statement',
         });
+        ```
 
-        await cursor.load();
-    ```
-
-    2. __Button Text__: This can be added using `buttonText` property:
-    ```
+        
+    <br>
+        
+        
+    *   **Button Text**: Added using the `data-cursor-text-button` attribute:
+        
+        ```
+        <div data-cursor-type="number" data-cursor-text-button="Button Text Statement">Hover over me</div>
+        ```
+         
+        Or Using `buttonText` property with JavaScript:
+        
+        ```
         const cursor = new Cursor({
             type: number,
             selector: '.section',
             buttonText: 'Button Text Statement',
         });
-
-        await cursor.load();
-    ```
-
-    3. __Image Text__: This can be added using `imageText` property:
-    ```
+        ```
+        
+    <br>
+        
+        
+    *   **Image Text**: Added using the `data-cursor-text-image` attribute:
+        
+        ```
+        <div data-cursor-type="number" data-cursor-text-image="Image Text Statement">Hover over me</div>
+        ```
+        
+        
+        Or Using `imageText` property with JavaScript:
+        
+        ```
         const cursor = new Cursor({
             type: number,
             selector: '.section',
             imageText: 'Image Text Statement',
         });
-
-        await cursor.load();
-    ```
-    
-    4. __Click Text__: This can be added using `clickText` property:
-    ```
+        ```
+        
+        
+    <br>
+        
+        
+    *   **Click Text**: Added using the `data-cursor-text-click` attribute:
+        
+        ```
+        <div data-cursor-type="number" data-cursor-text-click="Click Text Statement">Hover over me</div>
+        ```
+        
+        Or Using `clickText` property with JavaScript:
+        
+        ```
         const cursor = new Cursor({
             type: number,
             selector: '.section',
             clickText: 'Click Text Statement',
         });
-
-        await cursor.load();
+        ```
+        
+    <br>
+        
+5.  **Changing Text Color**: Change the color of text with the `data-cursor-text-color` attribute:
+    
+    ```
+    <div data-cursor-type="number" data-cursor-text-color="#ff0000">Hover over me</div>
     ```
 
-5. __Changing Text Color__: Change the color of text with the `textColor` property:
-```
+    Or Using `textColor` property with JavaScript:
+    
+    ```
     const cursor = new Cursor({
         type: number,
         selector: '.section',
         textColor: '#ff0000',
     });
+    ```
+    
+    Similar to the `data-cursor-color`, you can use various color conventions for text customization, including _RGB_, _Hexadecimal Values_, or _Color names_.
+    
+    <br>
+    
+6.  **Changing Font Family**: Change the font family of text with the `data-cursor-font` attribute:
+    
+    ```
+    <div data-cursor-type="number" data-cursor-font="Monospace">Hover over me</div>
+    ```
 
-    await cursor.load();
-```
-
-Similar to the __color__ property, you can use various color conventions for cursor customization, including _RGB_, _Hex_, or even _Color names_.
-
-6. __Changing Font Family__: Change the font family of the text with the `font` property:
-```
+    Or Using `font` property with JavaScript:
+    
+    ```
     const cursor = new Cursor({
         type: number,
         selector: '.section',
         font: 'Monospace',
     });
-
-    await cursor.load();
-```
-
-Here's a complete example of a __Cursor__ class instance with various cursor customizations:
-
-```
+    ```
+    
+    <br>
+    
+    Here's a complete example of a `div` with various cursor customizations:
+    
+    ```
+    <div 
+        data-cursor-type="number"
+        data-cursor-delay="true"
+        data-cursor-color="#ff0000"
+        data-cursor-text="Idle Text Statement"
+        data-cursor-text-button="Button Text Statement"
+        data-cursor-text-image="Image Text Statement"
+        data-cursor-text-click="Click Text Statement"
+        data-cursor-text-color="#ff0000"
+        data-cursor-font="Monospace"
+    >
+        Your Content...
+    </div>
+    ```
+    
+    
+    And similarly a complete `Cursor` Class Instance with every property available is given below:
+    
+    ```
     const cursor = new Cursor({
         type: number,
         selector: '.section',
@@ -231,8 +315,147 @@ Here's a complete example of a __Cursor__ class instance with various cursor cus
         textColor: '#ff0000',
         font: 'Monospace',
     });
+    ```
+    
+    <br>
+    
+7.  **Changing State Targets**: You can change when the state change or state effect will take place in case of **Button** and **Image** states. By default these trigger when you enter any `button` / `a` tag and `img` tag respectively but you can change when these elements with the help of `data-cursor-target-button="selector"` and `data-cursor-target-image="selector"`, where selector refers to any **tag**, **.class** or **#id**:
+    
+    ```
+    <div data-cursor-type="number" data-cursor-target-button=".classname" data-cursor-target-image="#id">Hover over me</div>
+    ```
 
-    await cursor.load();
-```
+    Or Using `buttonTarget` and `imageTarget` properties with JavaScript:
+    
+    ```
+    const cursor = new Cursor({
+        type: number,
+        selector: '.section',
+        buttonTarget: '.class',
+        imageTarget: '#id'
+    });
+    ```
+    
+    <br>
+    
+8.  **Hide the actual pointer**: To hide the default / actual pointer in the section you can use `data-cursor-hide`, this will hide the actual cursor in the section you selected:
+    
+    ```
+    <div data-cursor-type="number" data-cursor-hide>Hover over me</div>
+    ```
 
-## Lincese MIT
+    Or Using `pointer` property with JavaScript:
+    
+    ```
+    const cursor = new Cursor({
+        type: number,
+        selector: '.section',
+        pointer: false,
+    });
+    ```
+    
+    <br>
+    
+9.  **Customize Z-Index**: By default when you apply a cursor to a **Section** the cursor you apply has `z-index` value of **9999**. You can change this by using `data-cursor-z-index="value"`:
+    
+    ```
+    <div data-cursor-type="number" data-cursor-z-index="4">Hover over me</div>
+    ```
+
+    Or Using `zIndex` property with JavaScript:
+    
+    ```
+    const cursor = new Cursor({
+        type: number,
+        selector: '.section',
+        zIndex: 4,
+    });
+    ```
+    
+    <br>
+    
+    When a cursor is applied to any child of this **Section**, its `z-index` will be **value + 1**, making the child's cursor appear above the parent's cursor. Eg:- lets take the above cursor for example, you have set the `z-index` value to **4**, so if you apply cursor to its child, that new cursor to child will have `z-index` value of **4 + 1 = 5**. You can change this by using data-cursor-send-to-back, which will set the child's cursor z-index to Parent's `z-index` **value - 1**. Lets Look at an example.
+    
+    Without applying `data-cursor-send-to-back`:
+    
+    Cursor applied to a section:
+    
+    ```
+    <div class="section" data-cursor-type="1" data-cursor-z-index="4">...</div>
+    ```
+    The Cursor applied to it will have the `z-index` value of **4**. We apply Cursor to a child of this **Section**:
+    
+    ```
+    <div class="section" data-cursor-type="1" data-cursor-z-index="4">
+        <div class="child" data-cursor-type="7">
+        </div>
+    </div>
+    ```
+    
+    Now here the Cursor of Parent **Section** will have `z-index` value of **4** and the child will have a Cursor with `z-index` value of **5**.
+    
+    
+    If we were to use `data-cursor-send-to-back` like this:
+    ```
+    <div class="section" data-cursor-type="1" data-cursor-z-index="4" data-cursor-send-to-back>
+        <div class="child" data-cursor-type="7">
+        </div>
+    </div>
+    ```
+    Then the child will have the `z-index` value of **3**.
+    
+    In JavaScript you can use `sendToBack` for the same effect:
+    ```
+    const cursor = new Cursor({
+        type: number,
+        selector: '.section',
+        sendToBack: true,
+    });
+    ```
+    
+    Note: - If you decide to put custom `z-index` value then the custom z-index value take precedence. Example:
+    
+    ```
+    <div class="section" data-cursor-type="1" data-cursor-z-index="4">
+        <div class="child" data-cursor-type="7" data-cursor-z-index="55">
+        </div>
+    </div>
+    ```
+    
+    Here it is of no matter if you use `send-to-back` functionality or not the Parent **Section** will have `z-index` value of **4** and the child will have `z-index` value of **55**.
+    
+    
+    
+    
+<br><br>
+## Limitations
+
+Any kind of top-layer elements like **Dialogs, Modals, Select, etc.** exist in the top layer of the browser and cannot be manipulated using Cursor JS, as z-index values do not affect them. The Cursor Element will always be beneath these elements.
+
+
+<br><br>
+
+## A Complete list of options available to you
+| Customization           | HTML Data Attributes                                                                                   | JavaScript (Cursor Class)                                                   |
+|-------------------------|--------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| Basic Setup             | data-cursor-type="1"                                                                                   | type: 1                                                                     |
+| Add Delay               | data-cursor-delay="true"                                                                               | delay: true                                                                 |
+| Change Color            | data-cursor-color="red"                                                                            | color: "red"                                                            |
+| Multiple Colors         | data-cursor-color="red blue green"                                                                   | color: "red blue green"                                                   |
+| Idle Text               | data-cursor-text="Idle Text Statement"                                                                 | text: "Idle Text Statement"                                                 |
+| Button Text             | data-cursor-text-button="Button Text Statement"                                                        | buttonText: "Button Text Statement"                                         |
+| Image Text              | data-cursor-text-image="Image Text Statement"                                                          | imageText: "Image Text Statement"                                           |
+| Click Text              | data-cursor-text-click="Click Text Statement"                                                          | clickText: "Click Text Statement"                                           |
+| Change Text Color       | data-cursor-text-color="red"                                                                       | textColor: "red"                                                        |
+| Change Font             | data-cursor-font="Monospace"                                                                           | font: "Monospace"                                                           |
+| Changing State Targets  | data-cursor-target-button=".classname"<br>        data-cursor-target-image="#id"<br>       | buttonTarget: '.class',<br>        imageTarget: '#id'<br>       |
+| Hide the Actual Pointer | data-cursor-hide                                                                                       | pointer: false                                                              |
+| Customize Z-Index       | data-cursor-z-index="9999"                                                                                | zIndex: 9999                                                                   |
+| Send to Back            | data-cursor-send-to-back                                                                               | sendToBack: true                                                            |
+
+
+
+<br><br>
+## License
+
+MIT

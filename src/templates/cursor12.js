@@ -1,5 +1,6 @@
 import { curs_SpanTextNoDelay, curs_SpanNoDelay } from "../creator.js";
 import { curs_circularText } from "../helper.js";
+import Template from "./template.js";
 
 // CSS Needed
 const cursorCSS = {
@@ -71,27 +72,22 @@ const cursorCSS = {
     `,
 };
 
-export const cursor = {
+export class cursor extends Template {
 
-    css: cursorCSS,
+    constructor() {
+        super()
+        this.css =  cursorCSS;
+        this.cursor1 =  null;
+        this.textElement =  null;
+        this.cursor2 =  null;
+        this.text =  null;
+        this.imageText =  null;
+        this.color =  null;
+        this.textColor =  null;
+    }
 
-    isActive: false,
 
-    cursor1: null,
-
-    textElement: null,
-
-    cursor2: null,
-
-    text: null,
-
-    imageText: null,
-
-    color: null,
-
-    textColor: null,
-
-    create: function ({color, textColor, zIndex, font, text, imageText}) {
+    create({color, textColor, zIndex, font, text, imageText}) {
         color = color ? color[0] : "#FFF";
         textColor = textColor ? textColor[0] : "#000";
         text = text || 'Only 25 chars with space.';
@@ -110,9 +106,9 @@ export const cursor = {
         this.imageText = imageText || "Yep! 25 chars are allowed";
         this.color = color;
         this.textColor = textColor;
-    },
+    }
 
-    activate: function (event) {
+    activate(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor1.style.display = "";
         this.cursor1.style.transition = "";
@@ -122,9 +118,9 @@ export const cursor = {
         this.cursor2.style.transition = '';
 
         this.isActive = true;
-    },
+    }
 
-    deactivate: function () {
+    deactivate() {
         this.cursor1.style.display = "none";
         this.cursor1.style.transition = "none";
 
@@ -132,26 +128,26 @@ export const cursor = {
         this.cursor2.style.transition = 'none';
 
         this.isActive = false;
-    },
+    }
 
-    onMouseMove: function (event) {
+    onMouseMove(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor2.style.translate = `${event.clientX}px ${event.clientY}px`;
 
-    },
+    }
     
     // On Mouse down 
-    onButtonOver: function () {
+    onButtonOver() {
         this.cursor1.classList.add("button");
         this.cursor2.classList.add('button');
-    },
+    }
 
-    onButtonOut: function () {
+    onButtonOut() {
         this.cursor1.classList.remove("button");
         this.cursor2.classList.remove('button');
-    },
+    }
 
-    onImageOver: function () {
+    onImageOver() {
         this.textElement.innerText = this.imageText;
         curs_circularText({size: 100, element: this.textElement, spacing: 14});
 
@@ -161,9 +157,9 @@ export const cursor = {
         this.cursor2.classList.add('image');
         this.cursor2.style.backgroundColor = this.color;
 
-    },
+    }
 
-    onImageOut: function () {
+    onImageOut() {
         this.textElement.innerText = this.text;
         curs_circularText({size: 100, element: this.textElement, spacing: 14});
 
@@ -172,15 +168,32 @@ export const cursor = {
 
         this.cursor2.classList.remove('image');
         this.cursor2.style.backgroundColor = "";
-    },
+    }
 
-    onMouseDown: function () {
+    onMouseDown() {
         this.cursor1.classList.add("click");
         this.cursor2.classList.add('click');
-    },
+    }
 
-    onMouseUp: function () {
+    onMouseUp() {
         this.cursor1.classList.remove("click");
         this.cursor2.classList.remove('click');
+    }
+    
+    // Delete function
+    delete() {
+        this.deactivate();
+        this.cursor1.remove();
+        this.cursor2.remove();
+        this.cursor1 = null;
+        this.cursor2 = null;
+        this.css = null;
+        this.isActive = null;
+
+        this.textElement =  null;
+        this.text =  null;
+        this.imageText =  null;
+        this.color =  null;
+        this.textColor =  null;
     }
 }

@@ -1,5 +1,6 @@
 import {  curs_SpanNoBGWithDelay } from "../creator.js";
 import { curs_getRandomColor, curs_getRandomElementFromArray } from "../helper.js";
+import Template from "./template.js";
 
 
 // CSS Needed
@@ -63,41 +64,20 @@ const cursorCSS = {
     `,
 }
 
-/**
- * 
- * @param {HTMLElement} element 
- * @param {HTMLElement} spanElement 
- * @param {Array} arr 
- */
+export class cursor extends Template {
+    constructor() {
+        super();
+        this.css = cursorCSS;
+        this.isActive = false;
+        this.cursor1 = null;
+        this.spanElement = null;
 
-const randomCursorColor = (element, spanElement, arr) => {
-    if (typeof arr === "object" && arr.length > 1 ) {
-        spanElement.addEventListener('animationiteration', () => {
-            const lastColor = spanElement.style.backgroundColor || 'transparent';
-            element.style.backgroundColor = lastColor;
-            spanElement.style.backgroundColor = curs_getRandomElementFromArray(arr, lastColor);
-        });
-
-    } else {
-        spanElement.addEventListener('animationiteration', () => {
-            const lastColor = getComputedStyle(spanElement).backgroundColor;
-            element.style.backgroundColor = lastColor;
-            spanElement.style.background = curs_getRandomColor(lastColor);
-        });
+        // Animation Specific
+        this.animationOnIteration = null;
+        this.lastColor = null;
     }
-}
 
-export const cursor = {
-
-    css: cursorCSS,
-
-    isActive: false,
-
-    cursor1: null,
-
-    spanElement: null,
-
-    create: function ({color, zIndex, delay}) {
+    create({color, zIndex, delay}) {
         color = color ? color : ["#FFF"];
         this.cursor1 = curs_SpanNoBGWithDelay({zIndex, classes: 'cjs-span cjs-22', delay});
 
@@ -106,50 +86,90 @@ export const cursor = {
         this.cursor1.appendChild(spanElement);
 
         spanElement.style.background = color[0]
-        randomCursorColor(this.cursor1, spanElement, color);
-
+        // handleAnimation(this.cursor1, spanElement, color);
         this.spanElement = spanElement;
-    },
 
-    activate: function (event) {
+        // After everything is set get which type of animation will be played on iteration
+        // This is done so the event can removed when cursor is deleted
+        this.animationOnIteration = this.#setRandomAnimation(this.cursor1, spanElement, color);
+        this.spanElement.addEventListener('animationiteration', this.animationOnIteration);
+    }
+
+    activate(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor1.style.display = '';
         this.cursor1.style.transition = '';
         this.isActive = true;
-    },
+    }
 
-    deactivate: function () {
+    deactivate() {
         this.cursor1.style.display = 'none';
         this.cursor1.style.transition = 'none';
         this.isActive = false;
-    },
+    }
 
-    onMouseMove: function (event) {
+    onMouseMove(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
-    },
+    }
     
     // On Mouse down 
-    onButtonOver: function () {
+    onButtonOver() {
         this.cursor1.classList.add('button');
-    },
+    }
 
-    onButtonOut: function () {
+    onButtonOut() {
         this.cursor1.classList.remove('button');
-    },
+    }
 
-    onImageOver: function () {
+    onImageOver() {
         this.cursor1.classList.add('image');
-    },
+    }
 
-    onImageOut: function () {
+    onImageOut() {
         this.cursor1.classList.remove('image');
-    },
+    }
 
-    onMouseDown: function () {
+    onMouseDown() {
         this.cursor1.classList.add('click');
-    },
+    }
 
-    onMouseUp: function () {
+    onMouseUp() {
         this.cursor1.classList.remove('click');
+    }
+
+    // Random Animation - Why so rigid? So it can be easily removed whenever is needed
+    // Prepare the function that is to be run when animation iteration happens
+    #setRandomAnimation = (element, innerElement, colors) => {
+        if (typeof colors === "object" && colors.length > 1 ) {
+
+            return () => {
+                const lastColor = innerElement.style.backgroundColor || 'transparent';
+                element.style.backgroundColor = lastColor;
+                innerElement.style.backgroundColor = curs_getRandomElementFromArray(colors, lastColor);
+            }
+
+        } else {
+
+            return () => {
+                const lastColor = this.lastColor ? this.lastColor : getComputedStyle(innerElement).backgroundColor;
+                element.style.backgroundColor = lastColor;
+                const newColor = curs_getRandomColor(lastColor);
+
+                this.lastColor = newColor;
+                innerElement.style.background = newColor;
+            }
+
+        }
+    }
+    
+    // Delete function
+    delete() {
+        this.deactivate();
+        // Removes the event Listener
+        this.spanElement.removeEventListener('animationiteration', this.animationOnIteration);
+        this.cursor1.remove();
+        this.cursor1 = null;
+        this.css = null;
+        this.activate = null;
     }
 }

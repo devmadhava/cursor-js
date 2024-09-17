@@ -4,37 +4,35 @@ import Template from "./template.js";
 
 // CSS Needed
 const cursorCSS = {
-    name: 'cjs-9',
+    name: 'cjs-29',
     cssString: `
-    .cjs-9 {
+    .cjs-29 {
         background-color: var(--bg-color);
-        width: 60px;
-        height: 60px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
 
-        -webkit-box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.21);
-        -moz-box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.21);
-        box-shadow: 0px 10px 15px -1px rgba(0,0,0,0.21);
+        mix-blend-mode: difference;
     }
 
-    .cjs-9.cjs-normal {
+    .cjs-29.cjs-normal {
         transition: width 0.2s ease, height 0.2s ease, transform 0.2s ease;
     }
 
-    .cjs-9.cjs-delay {
+    .cjs-29.cjs-delay {
         transition: width 0.2s ease, height 0.2s ease, transform 0.2s ease, translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .cjs-9.button {
-        transform: translate(-50%, -50%) scale(0.6);
+    .cjs-29.button {
+        transform: translate(-50%, -50%) scale(0.5);
     }
 
-    .cjs-9.image {
-        transform: translate(-50%, -50%) scale(0.8);
+    .cjs-29.image {
+        transform: translate(-50%, -50%) scale(0.5);
     }
 
-    .cjs-9.click {
-        transform: translate(-50%, -50%) scale(1.2);
+    .cjs-29.click {
+        transform: translate(-50%, -50%) scale(1.5);
     }
     `,
 }
@@ -42,16 +40,15 @@ const cursorCSS = {
 
 export class cursor extends Template {
     constructor(){
-        super()
+        super();
         this.css = cursorCSS;
         this.isActive = false;
-        this.cursor1 = null;    
+        this.cursor1 = null;
     }
-
 
     create({color, zIndex, delay}) {
         color = color ? color[0] : "#FFF";
-        this.cursor1 = curs_Span1({zIndex, color, classes: 'cjs-span cjs-9', delay});
+        this.cursor1 = curs_Span1({zIndex, color, classes: 'cjs-span cjs-29', delay});
     }
 
     activate(event) {

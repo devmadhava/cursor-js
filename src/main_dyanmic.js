@@ -1,4 +1,4 @@
-import Cursor from "./curs_cursor.js";
+import Cursor from "./curs_cursor_dynamic.js";
 import { curs_injectCSS } from "./helper.js";
 
 curs_injectCSS({
@@ -17,14 +17,6 @@ curs_injectCSS({
         left: 0;
         position: fixed;
         pointer-events: none;
-    }
-
-    .cjs-hide-pointer {
-        cursor: none !important;
-    }
-
-    .cjs-hide-pointer * {
-        cursor: none !important;
     }
     `
 });
@@ -86,7 +78,7 @@ curs_allSections?.forEach(async curs_section => {
     });
 
     // Will be needed in case of dynamic imports
-    // cursor.load();
+    await cursor.load();
 });
 
 

@@ -1,10 +1,12 @@
 {
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "build:dynamic": "rollup -c rollup.config.dynamic.js",
+    "build:all": "npm run build && npm run build:dynamic"
   },
   "name": "@vogelweb/cursor-js",
-  "version": "1.0.5",
-  "description": "Create Simple yet effective cursor effect without writing JavaScript.",
+  "version": "1.0.6",
+  "description": "Create simple yet effective cursor effects without writing JavaScript. You can use data attributes to configure cursors or use the Cursor class instance for more control.",
   "main": "dist/min/cursor.js",
   "files": [
     "dist",
@@ -26,10 +28,19 @@
     "url": "git+https://github.com/devmadhava/cursor-js.git"
   },
   "keywords": [
+    "cursor",
     "cursors",
     "mouse",
-    "pointers",
-    "web dev"
+    "pointer",
+    "pointes",
+    "webdev",
+    "interactive",
+    "custom cursors",
+    "UI effects",
+    "frontend",
+    "CSS",
+    "UI",
+    "UX"
   ],
   "author": "devmadhava",
   "license": "MIT",
@@ -39,6 +50,9 @@
   "homepage": "https://github.com/devmadhava/cursor-js#readme",
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "babel-loader": "^9.1.3",
     "rollup": "^2.79.1",
     "rollup-plugin-terser": "^7.0.2"

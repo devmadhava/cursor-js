@@ -1,5 +1,6 @@
 import { curs_Span1, curs_SpanNoBGNoDelay } from "../creator.js";
 import { curs_colorToRGB } from "../helper.js";
+import Template from "./template.js";
 
 
 // CSS Needed
@@ -80,17 +81,16 @@ const cursorCSS = {
     `,
 }
 
-export const cursor = {
+export class cursor extends Template {
+    constructor() {
+        super();
+        this.css = cursorCSS;
+        this.isActive = false;
+        this.cursor1 = null;
+        this.cursor2 = null;
+    }
 
-    css: cursorCSS,
-
-    isActive: false,
-
-    cursor1: null,
-
-    cursor2: null,
-
-    create: function ({color, zIndex}) {
+    create({color, zIndex}) {
         // color = color ? color : ["#FFF"];
         const [color1, color2] = color || ["#FFF", "#FFF"];
         this.cursor1 = curs_SpanNoBGNoDelay({zIndex, classes: 'cjs-span cjs-24-1'});
@@ -100,9 +100,9 @@ export const cursor = {
         this.cursor1.style.setProperty('--r', r);
         this.cursor1.style.setProperty('--g', g);
         this.cursor1.style.setProperty('--b', b);
-    },
+    }
 
-    activate: function (event) {
+    activate(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor1.style.display = '';
         this.cursor1.style.transition = '';
@@ -112,9 +112,9 @@ export const cursor = {
         this.cursor2.style.transition = '';
 
         this.isActive = true;
-    },
+    }
 
-    deactivate: function () {
+    deactivate() {
         this.cursor1.style.display = 'none';
         this.cursor1.style.transition = 'none';
 
@@ -122,41 +122,52 @@ export const cursor = {
         this.cursor2.style.transition = 'none';
 
         this.isActive = false;
-    },
+    }
 
-    onMouseMove: function (event) {
+    onMouseMove(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor2.style.translate = `${event.clientX}px ${event.clientY}px`;
-    },
+    }
     
     // On Mouse down 
-    onButtonOver: function () {
+    onButtonOver() {
         this.cursor1.classList.add('button');
         this.cursor2.classList.add('button');
-    },
+    }
 
-    onButtonOut: function () {
+    onButtonOut() {
         this.cursor1.classList.remove('button');
         this.cursor2.classList.remove('button');
-    },
+    }
 
-    onImageOver: function () {
+    onImageOver() {
         this.cursor1.classList.add('image');
         this.cursor2.classList.add('image');
-    },
+    }
 
-    onImageOut: function () {
+    onImageOut() {
         this.cursor1.classList.remove('image');
         this.cursor2.classList.remove('image');
-    },
+    }
 
-    onMouseDown: function () {
+    onMouseDown() {
         this.cursor1.classList.add('click');
         this.cursor2.classList.add('click');
-    },
+    }
 
-    onMouseUp: function () {
+    onMouseUp() {
         this.cursor1.classList.remove('click');
         this.cursor2.classList.remove('click');
+    }
+    
+    // Delete function
+    delete() {
+        this.deactivate();
+        this.cursor1.remove();
+        this.cursor2.remove();
+        this.cursor1 = null;
+        this.cursor2 = null;
+        this.css = null;
+        this.isActive = null;
     }
 }

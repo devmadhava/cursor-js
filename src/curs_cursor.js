@@ -1,131 +1,98 @@
-import { cursor as cursor1 } from "./templates/cursor1.js";
-import { cursor as cursor2 } from "./templates/cursor2.js";
-import { cursor as cursor3 } from "./templates/cursor3.js";
-import { cursor as cursor4 } from "./templates/cursor4.js";
-import { cursor as cursor5 } from "./templates/cursor5.js";
-import { cursor as cursor6 } from "./templates/cursor6.js";
-import { cursor as cursor7 } from "./templates/cursor7.js";
-import { cursor as cursor8 } from "./templates/cursor8.js";
-import { cursor as cursor9 } from "./templates/cursor9.js";
-import { cursor as cursor10 } from "./templates/cursor10.js";
-import { cursor as cursor11 } from "./templates/cursor11.js";
-import { cursor as cursor12 } from "./templates/cursor12.js";
-import { cursor as cursor13 } from "./templates/cursor13.js";
-import { cursor as cursor14 } from "./templates/cursor14.js";
-import { cursor as cursor15 } from "./templates/cursor15.js";
-import { cursor as cursor16 } from "./templates/cursor16.js";
-import { cursor as cursor17 } from "./templates/cursor17.js";
-import { cursor as cursor18 } from "./templates/cursor18.js";
-import { cursor as cursor19 } from "./templates/cursor19.js";
-import { cursor as cursor20 } from "./templates/cursor20.js";
-import { cursor as cursor21 } from "./templates/cursor21.js";
-import { cursor as cursor22 } from "./templates/cursor22.js";
-import { cursor as cursor23 } from "./templates/cursor23.js";
-import { cursor as cursor24 } from "./templates/cursor24.js";
-import { cursor as cursor25 } from "./templates/cursor25.js";
-import { cursor as cursor26 } from "./templates/cursor26.js";
-import { cursor as cursor27 } from "./templates/cursor27.js";
-import { cursor as cursor28 } from "./templates/cursor28.js";
+import { cursorMap } from "./cursor_map.js";
 
-const cursorMap = {
-    'cursor1': cursor1,
-    'cursor2': cursor2,
-    'cursor3': cursor3,
-    'cursor4': cursor4,
-    'cursor5': cursor5,
-    'cursor6': cursor6,
-    'cursor7': cursor7,
-    'cursor8': cursor8,
-    'cursor9': cursor9,
-    'cursor10': cursor10,
-    'cursor11': cursor11,
-    'cursor12': cursor12,
-    'cursor13': cursor13,
-    'cursor14': cursor14,
-    'cursor15': cursor15,
-    'cursor16': cursor16,
-    'cursor17': cursor17,
-    'cursor18': cursor18,
-    'cursor19': cursor19,
-    'cursor20': cursor20,
-    'cursor21': cursor21,
-    'cursor22': cursor22,
-    'cursor23': cursor23,
-    'cursor24': cursor24,
-    'cursor25': cursor25,
-    'cursor26': cursor26,
-    'cursor27': cursor27,
-    'cursor28': cursor28
-}
-
-/**
- * @preserve
- * @typedef {Object} CursorOptions
- * @property {number} [type]
- * @property {string|null} [selector]
- * @property {HTMLElement|null} [section]
- * @property {string} [color]
- * @property {string} [image]
- * @property {string} [font]
- * @property {string} [text]
- * @property {string} [imageText]
- * @property {string} [buttonText]
- * @property {string} [clickText]
- * @property {string} [textColor]
- * @property {boolean} [delay]
- * @property {'hidden'|'show'} [pointer]
- */
-
-/**
- * Represents a custom cursor.
- * @param {CursorOptions} options
- */
 class Cursor {
+    #cursor;
+    #type;
+
+    #color;
+    #textColor;
+
+    #text
+    #imageText;
+    #buttonText;
+    #clickText;
+    #font;
+
+    #delay;
+    #section;
+    #sendToBack;
+    #zIndex;
+
+    #onMouseMove;
+    #onMouseOver;
+    #onMouseOut;
+    #onMouseDown;
+    #onMouseUp;
+    #onMouseLeave;
+
+    #hidden;
+    #isDragging;
+
+    #buttonTarget;
+    #imageTarget;
+
     constructor({
         type, 
-        selector, 
+        selector,
         section, 
-        color, 
-        imageColor, 
-        buttonColor, 
-        image, 
-        font, 
+        
+        color,
+        textColor,
+
         text, 
         imageText, 
         buttonText,
-        clickText, 
-        textColor,
+        clickText,
+        font,
+
         delay,
         pointer, 
+        zIndex,
+        sendToBack,
+
+        buttonTarget,
+        imageTarget,
     }) {
         if (!type) return;
-        this.type = type;
+        this.#type = type;
 
-        this.cursor;
+        this.#cursor;
+        this.#color = this.#extractArrayFromValues(color);
+        this.#textColor = this.#extractArrayFromValues(textColor);
 
-        this.color = this.#extractArrayFromValues(color);
-        this.textColor = this.#extractArrayFromValues(textColor);
-        this.imageColor = this.#extractArrayFromValues(imageColor);
-        this.buttonColor = this.#extractArrayFromValues(buttonColor);
+        this.#text = text;
+        this.#imageText = imageText;
+        this.#buttonText = buttonText;
+        this.#clickText = clickText;
+        this.#font = font;
 
-        this.image = image;
-        this.font = font;
-        this.zIndex;
+        this.#delay = delay;
+        this.#section = this.#createSection(section, selector);
 
-        this.text = text;
-        this.imageText = imageText;
-        this.buttonText = buttonText;
-        this.clickText = clickText;
+        this.#sendToBack = sendToBack || false;
+        this.#zIndex = this.#setZIndex(zIndex);
 
-        this.delay = delay;
-        this.section = this.#createSection(section, selector);
-        this.#findCursorSectionInAncestors(this.section);
+        this.#buttonTarget = typeof buttonTarget === 'string' ? buttonTarget : 'button, a';
+        this.#imageTarget = typeof imageTarget === 'string' ? imageTarget : 'img';
 
-        pointer === 'hidden' && this.#hidePointer();
+        pointer === false && this.#hidePointer();
+
+        // Event
+        // Bind methods
+        this.#onMouseMove = this.#handleMouseMove.bind(this);
+        this.#onMouseOver = this.#handleMouseOver.bind(this);
+        this.#onMouseOut = this.#handleMouseOut.bind(this);
+        this.#onMouseDown = this.#handleMouseDown.bind(this);
+        this.#onMouseUp = this.#handleMouseUp.bind(this);
+        this.#onMouseLeave = this.#handleMouseLeave.bind(this);
 
         // Load Function is here
         this.#init();
         this.#setEventListener();
+
+        // User Specific
+        this.#hidden = false;
+        this.#isDragging = false;
     }
 
     #createSection(section, selector) {
@@ -142,113 +109,151 @@ class Cursor {
     }
 
     #hidePointer() {
-        this.section.style.cursor = 'none';
+        this.#section.classList.add('cjs-hide-pointer');
     }
 
     #init() {
-        // this.module = await import(`./templates/cursor${this.type}.js`);
-        // this.cursor = this.module.cursor;
-        this.cursor = cursorMap[`cursor${this.type}`];
+        this.#cursor = new cursorMap[`cursor${this.#type}`];
 
-        if (!this.cursor) return;
-        this.cursor.create({
-            color: this.color,
-            image: this.image,
-            section: this.section,
-            font: this.font,
-            zIndex: this.zIndex,
-            text: this.text,
-            clickText: this.clickText,
-            imageText: this.imageText,
-            buttonText: this.buttonText,
-            textColor: this.textColor,
-            delay: this.delay,
+        if (!this.#cursor) return;
+        this.#cursor.create({
+            color: this.#color,
+            section: this.#section,
+            font: this.#font,
+            zIndex: this.#zIndex,
+            text: this.#text,
+            clickText: this.#clickText,
+            imageText: this.#imageText,
+            buttonText: this.#buttonText,
+            textColor: this.#textColor,
+            delay: this.#delay,
         });
 
-        this.#injectCSS(this.cursor.css);
+        this.#injectCSS(this.#cursor.css);
     }
 
     #setEventListener() {
         // Events
-        this.section.addEventListener('mousemove', (event) => this.#handleMouseMove(event));
-        this.section.addEventListener('mouseover', (event) => this.#handleMouseOver(event));
-        this.section.addEventListener('mouseout', (event) => this.#handleMouseOut(event));
-        this.section.addEventListener('mousedown', (event) => this.#handleMouseDown(event));
-        this.section.addEventListener('mouseup', (event) => this.#handleMouseUp(event));
-
-        // Single Event Listener Only in clase of Cursor being at a target on
-        this.section.addEventListener('mousemove', (event) => this.#handleMouseOver(event), {once: true});
-
-        // The deactivate should only run when mouseleaves as oppose to mouseout
-        this.section.addEventListener('mouseleave', (event) => this.cursor.deactivate(event));
+        this.#section.addEventListener('mousemove', this.#onMouseMove);
+        this.#section.addEventListener('mouseover', this.#onMouseOver);
+        this.#section.addEventListener('mouseout', this.#onMouseOut);
+        this.#section.addEventListener('mousedown', this.#onMouseDown);
+        this.#section.addEventListener('mouseup', this.#onMouseUp);
+        this.#section.addEventListener('mousemove', this.#onMouseOver, {once: true});
+        this.#section.addEventListener('mouseleave', this.#onMouseLeave);
     }
 
-    // Can be removed but kept to be compliant with legacy
-    // Deprecated for this version / will be used for dynamic
-    load() {
-        // this.#init();
-        // this.#setEventListener();
-        // Console.log(" Please remove Load")
+    load() {}
+
+    #setZIndex(index) {
+        let zIndex;
+        if (index && typeof index === 'number') {
+            zIndex = index;
+
+        } else {
+            zIndex = this.#getZIndexFromAncestors(this.#section, this.#sendToBack);
+        }
+
+        this.#section.setAttribute("data-cursor-index", zIndex);
+        return zIndex;
     }
 
-    #findCursorSectionInAncestors(section) {
+    #getZIndexFromAncestors(section, sendToBack) {
         const ancestor = section.parentElement?.closest("[data-cursor-index]");
-        const zIndex = ancestor
-            ? Number(ancestor.getAttribute("data-cursor-index")) - 1
+        let zIndex;
+
+        if (!sendToBack) {
+            zIndex = ancestor
+            ? Number(ancestor.getAttribute("data-cursor-index")) + 1
             : 9999;
 
-        section.setAttribute("data-cursor-index", zIndex);
-        this.zIndex = zIndex;
+        } else {
+            zIndex = ancestor
+            ? Number(ancestor.getAttribute("data-cursor-index")) - 1
+            : 9999;
+        }
+        return zIndex;
     }
 
-    #injectCSS({name, cssString}) {
+    /**
+     * 
+     * @deprecated
+     */
+    #injectCSS_DEPRECATED({name, cssString}) {
         let styleElement = document.head.querySelector('[data-curs-essential-styles]');
         const stylesApplied = styleElement.getAttribute('data-curs-essential-styles');
+        const namePattern = new RegExp(`\\b${name}\\b`, 'g'); // \b ensures word boundaries
         if (stylesApplied.includes(name)) return;
     
         styleElement.innerHTML += cssString;
         styleElement.setAttribute('data-curs-essential-styles', stylesApplied + ' ' + name);
     }
 
+    #injectCSS({name, cssString}) {
+        let styleElement = document.head.querySelector('[data-curs-essential-styles]');
+        const stylesApplied = styleElement.getAttribute('data-curs-essential-styles');
+
+        const namePattern = new RegExp(`\\b${name}\\b`, 'g');
+        if (namePattern.test(stylesApplied)) return;
+    
+        styleElement.innerHTML += cssString;
+        styleElement.setAttribute('data-curs-essential-styles', stylesApplied + ' ' + name);
+    }
+
     #handleMouseMove(event) {
-        if (!this.cursor.isActive) {
-            this.cursor.activate(event);
+        if (!this.#cursor.isActive) {
+            this.#cursor.activate(event);
         }
 
-        this.cursor.onMouseMove(event);
+        // Helps the dragging not interrup the animation
+        if (this.#isDragging) {
+            this.#handleMouseUp(event);
+        }
+
+        this.#cursor.onMouseMove(event);
     }
 
     #handleMouseOver(event) {
-        if (!this.cursor.isActive) {
-            this.cursor.activate(event);
+        if (!this.#cursor.isActive) {
+            this.#cursor.activate(event);
         }
 
         const target = event.target;
-        if (target.matches('button, a')) {
-            this.cursor.onButtonOver(event);
+        if (this.#buttonTarget !== "" && target.matches(this.#buttonTarget)) {
+            this.#cursor.onButtonOver(event);
 
-        } else if (target.matches('img')) {
-            this.cursor.onImageOver(event);
+        }
+        
+        if (this.#imageTarget !== "" && target.matches(this.#imageTarget)) {
+            this.#cursor.onImageOver(event);
 
         }
     }
 
     #handleMouseOut(event) {
         const target = event.target;
-        if (target.matches('button, a')) {
-            this.cursor.onButtonOut(event);
+        if (this.#buttonTarget !== "" && target.matches(this.#buttonTarget)) {
+            this.#cursor.onButtonOut(event);
 
-        } else if (target.matches('img')) {
-            this.cursor.onImageOut(event);
+        }
+        
+        if (this.#imageTarget !== "" && target.matches(this.#imageTarget)) {
+            this.#cursor.onImageOut(event);
         }
     }
 
     #handleMouseDown(event) {
-        this.cursor.onMouseDown(event);
+        this.#isDragging = true;
+        this.#cursor.onMouseDown(event);
     }
 
     #handleMouseUp(event) {
-        this.cursor.onMouseUp(event);
+        this.#isDragging = false;
+        this.#cursor.onMouseUp(event);
+    }
+
+    #handleMouseLeave(event) {
+        this.#cursor.deactivate();
     }
 
     // Helper
@@ -256,6 +261,66 @@ class Cursor {
         if (!string) return;
         const arr = string.trim().split(" ");
         return arr;
+    }
+
+    // User Methods
+    hide() {
+        if (!this.#hidden) {
+            this.#removeEventListener();
+            this.#cursor.hide && console.log("hide");
+            this.#cursor.deactivate();
+            this.#hidden = true;
+        }
+    }
+
+    show() {
+        if (this.#hidden) {
+            this.#setEventListener();
+            this.#cursor.show && this.#cursor.show();
+            this.#hidden = false;
+        }
+    }
+
+    delete() {
+        this.#removeEventListener();
+        this.#cursor.delete();
+        this.#type = null;
+
+        this.#cursor = null;
+        this.#color = null;
+        this.#textColor = null;
+        this.#font = null;
+
+        this.#zIndex = null
+        this.#sendToBack = null;
+
+        this.#text = null;
+        this.#imageText = null;
+        this.#buttonText = null;
+        this.#clickText = null;
+
+        this.#delay = null;
+        this.#section = null;
+
+        this.#onMouseMove = null;
+        this.#onMouseOver = null;
+        this.#onMouseOut = null;
+        this.#onMouseDown = null;
+        this.#onMouseUp = null;
+        this.#onMouseLeave = null;
+        this.#hidden = null;
+        this.#isDragging = null;
+    }
+
+    // User Reviews
+    #removeEventListener() {
+        this.#section.removeEventListener('mousemove', this.#onMouseMove);
+        this.#section.removeEventListener('mouseover', this.#onMouseOver);
+        this.#section.removeEventListener('mouseout', this.#onMouseOut);
+        this.#section.removeEventListener('mousedown', this.#onMouseDown);
+        this.#section.removeEventListener('mouseup', this.#onMouseUp);
+        this.#section.removeEventListener('mousemove', this.#onMouseOver, {once: true});
+        this.#section.removeEventListener('mouseleave', this.#onMouseLeave);
     }
 }
 

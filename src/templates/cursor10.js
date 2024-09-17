@@ -1,4 +1,5 @@
 import { curs_SpanTextWithDelay } from "../creator.js";
+import Template from "./template.js";
 
 // CSS Needed
 const cursorCSS = {
@@ -52,71 +53,80 @@ const cursorCSS = {
 };
 
 
-export const cursor = {
+export class cursor extends Template {
+    constructor() {
+        super();
+        this.css =  cursorCSS;
+        this.isActive =  false;
+        this.cursor1 =  null;
+        this.imageText =  null;
+        this.buttonText =  null;
+    }
 
-    css: cursorCSS,
-
-    isActive: false,
-
-    cursor1: null,
-
-    imageText: null,
-
-    buttonText: null,
-
-    create: function ({color, textColor, zIndex, font, imageText, buttonText, delay}) {
+    create({color, textColor, zIndex, font, imageText, buttonText, delay}) {
         color = color ? color[0] : "#FFF";
         textColor = textColor ? textColor[0] : "#000";
         this.cursor1 = curs_SpanTextWithDelay({zIndex, color, textColor, font: font || "Monospace", classes: "cjs-span cjs-10", delay});
     
         this.imageText = imageText || "Image";
         this.buttonText = buttonText || "Click";
-    },
+    }
 
-    activate: function (event) {
+    activate(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
         this.cursor1.style.display = "";
         this.cursor1.style.transition = "";
 
         this.isActive = true;
-    },
+    }
 
-    deactivate: function () {
+    deactivate() {
         this.cursor1.style.display = "none";
         this.cursor1.style.transition = "none";
         this.isActive = false;
-    },
+    }
 
-    onMouseMove: function (event) {
+    onMouseMove(event) {
         this.cursor1.style.translate = `${event.clientX}px ${event.clientY}px`;
-    },
+    }
     
     // On Mouse down 
-    onButtonOver: function () {
+    onButtonOver() {
         this.cursor1.classList.add("button");
         this.cursor1.innerText = this.buttonText || "Button";
-    },
+    }
 
-    onButtonOut: function () {
+    onButtonOut() {
         this.cursor1.classList.remove("button");
         this.cursor1.innerText = "";
-    },
+    }
 
-    onImageOver: function () {
+    onImageOver() {
         this.cursor1.classList.add("image");
         this.cursor1.innerText = this.imageText || "Image";
-    },
+    }
 
-    onImageOut: function () {
+    onImageOut() {
         this.cursor1.classList.remove("image");
         this.cursor1.innerText = "";
-    },
+    }
 
-    onMouseDown: function () {
+    onMouseDown() {
         this.cursor1.classList.add("click");
-    },
+    }
 
-    onMouseUp: function () {
+    onMouseUp() {
         this.cursor1.classList.remove("click");
+    }
+    
+    // Delete function
+    delete() {
+        this.deactivate();
+        this.cursor1.remove();
+        this.cursor1 = null;
+        this.css = null;
+        this.isActive = null;
+        this.imageText =  null;
+        this.buttonText =  null;
     }
 }
