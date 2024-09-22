@@ -76,7 +76,7 @@ export const curs_getScaleRelativeToTarget = (element, target, scaleFactor = 1.2
     const scale = (targetMaxSize / spanMaxSize) * scaleFactor;
 
     // Apply the uniform scale transformation to the span element
-    return scale;
+    return scale.toFixed(2);
 };
 
 

@@ -27,6 +27,8 @@ class Cursor {
 
     #hidden;
     #isDragging;
+    #state;
+    #previousState;
 
     #buttonTarget;
     #imageTarget;
@@ -93,6 +95,8 @@ class Cursor {
         // User Specific
         this.#hidden = false;
         this.#isDragging = false;
+        this.#state = 'idle';
+        this.#previousState = '';
     }
 
     #createSection(section, selector) {
@@ -222,11 +226,15 @@ class Cursor {
         if (this.#buttonTarget !== "" && target.matches(this.#buttonTarget)) {
             this.#cursor.onButtonOver(event);
 
+            this.#previousState = this.#state;
+            this.#state = 'button';
         }
         
         if (this.#imageTarget !== "" && target.matches(this.#imageTarget)) {
             this.#cursor.onImageOver(event);
 
+            this.#previousState = this.#state;
+            this.#state = 'image';
         }
     }
 
@@ -235,21 +243,57 @@ class Cursor {
         if (this.#buttonTarget !== "" && target.matches(this.#buttonTarget)) {
             this.#cursor.onButtonOut(event);
 
+            this.#previousState = this.#state;
+            this.#state = 'idle';
         }
         
         if (this.#imageTarget !== "" && target.matches(this.#imageTarget)) {
             this.#cursor.onImageOut(event);
+
+            this.#previousState = this.#state;
+            this.#state = 'idle';
         }
     }
 
     #handleMouseDown(event) {
         this.#isDragging = true;
+
+        this.#previousState = this.#state;
+        this.#state = 'clicked';
+
         this.#cursor.onMouseDown(event);
+    }
+
+    /**
+     * @deprecated
+     */
+    #handleMouseUp_DEPRECATED(event) {
+        this.#isDragging = false;
+        this.#cursor.onMouseUp(event);
     }
 
     #handleMouseUp(event) {
         this.#isDragging = false;
-        this.#cursor.onMouseUp(event);
+
+        if (this.#state === 'clicked') {
+            this.#cursor.onMouseUp(event);
+
+            if (this.#previousState === 'button') {
+                this.#cursor.onButtonOver(event);
+                this.#previousState = this.#state;
+                this.#state = 'button';
+    
+            } else if (this.#previousState === 'image') {
+                this.#cursor.onImageOver(event);
+                this.#previousState = this.#state;
+                this.#state = 'image';
+
+            } else {
+                this.#previousState = this.#state;
+                this.#state = 'idle';
+            }
+        }
+
     }
 
     #handleMouseLeave(event) {
@@ -267,7 +311,6 @@ class Cursor {
     hide() {
         if (!this.#hidden) {
             this.#removeEventListener();
-            this.#cursor.hide && console.log("hide");
             this.#cursor.deactivate();
             this.#hidden = true;
         }
@@ -310,6 +353,9 @@ class Cursor {
         this.#onMouseLeave = null;
         this.#hidden = null;
         this.#isDragging = null;
+        this.#state = null;
+        this.#previousState = null;
+        delete this;
     }
 
     // User Reviews

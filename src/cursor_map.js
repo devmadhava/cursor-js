@@ -32,6 +32,17 @@ import { cursor as cursor31 } from "./templates/cursor31.js";
 import { cursor as cursor32 } from "./templates/cursor32.js";
 import { cursor as cursor33 } from "./templates/cursor33.js";
 import { cursor as cursor34 } from "./templates/cursor34.js";
+import { cursor as cursor35 } from "./templates/cursor35.js";
+import { cursor as cursor36 } from "./templates/cursor36.js";
+import { cursor as cursor37 } from "./templates/cursor37.js";
+import { cursor as cursor38 } from "./templates/cursor38.js";
+import { cursor as cursor39 } from "./templates/cursor39.js";
+import { cursor as cursor40 } from "./templates/cursor40.js";
+import { cursor as cursor41 } from "./templates/cursor41.js";
+import { cursor as cursor42 } from "./templates/cursor42.js";
+import { cursor as cursor43 } from "./templates/cursor43.js";
+import { cursor as cursor44 } from "./templates/cursor44.js";
+import { cursor as cursor45 } from "./templates/cursor45.js";
 
 const cursorMap = {
     'cursor1': cursor1,
@@ -68,6 +79,17 @@ const cursorMap = {
     'cursor32': cursor32,
     'cursor33': cursor33,
     'cursor34': cursor34,
+    'cursor35': cursor35,
+    'cursor36': cursor36,
+    'cursor37': cursor37,
+    'cursor38': cursor38,
+    'cursor39': cursor39,
+    'cursor40': cursor40,
+    'cursor41': cursor41,
+    'cursor42': cursor42,
+    'cursor43': cursor43,
+    'cursor44': cursor44,
+    'cursor45': cursor45,
 }
 
 
